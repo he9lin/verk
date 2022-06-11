@@ -30,7 +30,9 @@ defmodule Verk.Supervisor do
     shutdown_timeout = Confex.get_env(:verk, :shutdown_timeout, 30_000)
     generate_node_id = Confex.get_env(:verk, :generate_node_id)
 
-    redis = worker(Redix, [redis_url, [name: Verk.Redis]], id: Verk.Redis)
+    redis_opts = Verk.StartRedis.verk_redis_opts(redis_url)
+
+    redis = worker(Redix, [redis_url, redis_opts], id: Verk.Redis)
     event_producer = worker(Verk.EventProducer, [], id: Verk.EventProducer)
     queue_stats = worker(Verk.QueueStats, [], id: Verk.QueueStats)
     schedule_manager = worker(Verk.ScheduleManager, [], id: Verk.ScheduleManager)

@@ -6,4 +6,12 @@ defmodule Verk.StartRedis do
   def start_redis(redis_url) do
     Redix.start_link(redis_url)
   end
+
+  def verk_redis_opts("rediss" <> _ = _redis_url) do
+    [name: Verk.Redis, socket_opts: [verify: :verify_none]]
+  end
+
+  def verk_redis_opts(_redis_url) do
+    [name: Verk.Redis]
+  end
 end
