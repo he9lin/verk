@@ -29,7 +29,8 @@ defmodule Verk.ScheduleManager do
   Connect to redis and timeout with the `poll_interval`
   """
   def init(_) do
-    {:ok, redis} = Redix.start_link(Confex.get_env(:verk, :redis_url))
+    start_opts = Confex.get_env(:verk, :redis_start_opts, [])
+    {:ok, redis} = Redix.start_link(Confex.get_env(:verk, :redis_url), start_opts)
     Verk.Scripts.load(redis)
 
     state = %State{redis: redis}
