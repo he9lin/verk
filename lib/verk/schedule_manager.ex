@@ -30,6 +30,9 @@ defmodule Verk.ScheduleManager do
   """
   def init(_) do
     start_opts = Confex.get_env(:verk, :redis_start_opts, [])
+
+    Logger.info("Connecting to redis with: #{inspect(start_opts)}")
+
     {:ok, redis} = Redix.start_link(Confex.get_env(:verk, :redis_url), start_opts)
     Verk.Scripts.load(redis)
 

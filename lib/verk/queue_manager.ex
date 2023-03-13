@@ -78,6 +78,9 @@ defmodule Verk.QueueManager do
   def init([queue_name]) do
     node_id = Confex.fetch_env!(:verk, :local_node_id)
     start_opts = Confex.get_env(:verk, :redis_start_opts, [])
+
+    Logger.info("Connecting to redis with: #{inspect(start_opts)}")
+
     {:ok, redis} = Redix.start_link(Confex.get_env(:verk, :redis_url), start_opts)
     Verk.Scripts.load(redis)
 
